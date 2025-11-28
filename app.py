@@ -80,6 +80,19 @@ if model_data is not None:
     y_test = model_data['y_test']
     feature_names = model_data.get('feature_names', None)
 
+        #Force n_neighbors to 17 ---
+    try:
+        # Check if the model has the n_neighbors attribute (typical of KNN in scikit-learn)
+        if hasattr(best_model, 'n_neighbors'):
+            best_model.n_neighbors = 17
+            model_data['n_neighbors'] = 17  # Update the display info
+            st.warning("⚠️ The K-Nearest Neighbors model has been explicitly set to use **17 neighbors** as requested.")
+        else:
+            st.warning("⚠️ Loaded model does not appear to be a KNN classifier. Cannot enforce n_neighbors=17.")
+    except Exception as e:
+        st.error(f"Error while trying to set n_neighbors: {e}")
+    
+
     st.success("✅ Model loaded successfully!")
 
     # Display model info
